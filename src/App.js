@@ -1,8 +1,45 @@
-import { Component } from "react"
+import { useEffect, useState } from "react"
 import "./App.css"
 import CardListComponent from "./components/card-list/card-list.component"
 import SearchBoxComponent from "./components/search-box/search-box.component"
 
+const App = () => {
+  const [searchFiled, setSearchFiled] = useState("")
+  const [monsters, setMonsters] = useState([])
+
+  console.log("render")
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then(
+        (data) => {
+          setMonsters(data)
+        },
+        () => console.log("update monsters data")
+      )
+      .finally(() => console.log("fetch finish"))
+  }, [])
+
+  const onSearchChange = (event) => {
+    const searchFieldString = event.target.value.toLowerCase()
+    setSearchFiled(searchFieldString)
+  }
+
+  const filteredMonsters = monsters.filter((monster) => {
+    return monster.name.toLowerCase().includes(searchFiled)
+  })
+
+  return (
+    <div className="App">
+      <h1 className="app-title">Monsters Rolodex</h1>
+      <SearchBoxComponent onSearchChange={onSearchChange} />
+      <CardListComponent monsters={filteredMonsters} />
+    </div>
+  )
+}
+
+/*
 class App extends Component {
   constructor() {
     super()
@@ -56,5 +93,6 @@ class App extends Component {
     )
   }
 }
+*/
 
 export default App
