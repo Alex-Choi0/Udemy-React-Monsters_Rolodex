@@ -8,7 +8,14 @@ class CardListComponent extends Component {
     return (
       <div className="card-list">
         {monsters.map((ele) => {
-          return <CardComponent id={ele.id} name={ele.name} email={ele.email} />
+          return (
+            <CardComponent
+              id={ele.id}
+              name={ele.name}
+              email={ele.email}
+              key={ele.id}
+            />
+          )
         })}
       </div>
     )
